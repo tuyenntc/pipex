@@ -223,29 +223,29 @@ int ft_strncmp(const char *s1, const char *s2, size_t n)
 
 char	*find_path(char *cmd, char **env)
 {
-	char	**paths;
+	char	**dirs;
 	char	*path;
-	char	*part_path;
+	char	*temp;
 	int		i;
 
 	while (ft_strnstr(env[i], "PATH", 4) == 0)
 		i++;
-	paths = ft_split(env[i] + 5, ':');
+	dirs = ft_split(env[i] + 5, ':');
 	i = 0;
-	while (paths[i])
+	while (dirs[i])
 	{
-		part_path = ft_strjoin(paths[i], "/");
-		path = ft_strjoin(part_path, cmd);
-		free(part_path);
+		temp = ft_strjoin(dirs[i], "/");
+		path = ft_strjoin(temp, cmd);
+		free(temp);
 		if (access(path, F_OK) == 0)
 			return (path);
 		free(path);
 		i++;
 	}
 	i = -1;
-	while (paths[++i])
-		free(paths[i]);
-	free(paths);
+	while (dirs[++i])
+		free(dirs[i]);
+	free(dirs);
 	return (0);
 }
 
@@ -266,6 +266,7 @@ void	execute_cmd(char *av, char **env)
 		perror("no path found");
 		exit(EXIT_FAILURE);
 	}
+//	printf("Path: %s\n", path);
 	if (execve(path, cmd, env) == -1)
 	{
 		perror("error executing cmd");
