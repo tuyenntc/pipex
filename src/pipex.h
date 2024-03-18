@@ -8,6 +8,7 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 # include <stdlib.h>
+# include "../libft/libft.h"
 
 char *ft_strchr(const char *s, int c);
 char    *ft_substr(char const *s, unsigned int start, size_t len);

@@ -4,7 +4,7 @@
 PATH=/nfs/homes/tunguyen/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 env
 "/usr/bin/ls"
-*/
+
 
 char *ft_strchr(const char *s, int c)
 {
@@ -220,7 +220,7 @@ int ft_strncmp(const char *s1, const char *s2, size_t n)
 		return (*(unsigned char *)&s1[i] - *(unsigned char *)&s2[i]);
 }
 
-
+*/
 char	*find_path(char *cmd, char **env)
 {
 	char	**dirs;
@@ -228,6 +228,7 @@ char	*find_path(char *cmd, char **env)
 	char	*temp;
 	int		i;
 
+	i = 0;
 	while (ft_strnstr(env[i], "PATH", 4) == 0)
 		i++;
 	dirs = ft_split(env[i] + 5, ':');
@@ -237,8 +238,12 @@ char	*find_path(char *cmd, char **env)
 		temp = ft_strjoin(dirs[i], "/");
 		path = ft_strjoin(temp, cmd);
 		free(temp);
-		if (access(path, F_OK) == 0)
+		if (access(path, F_OK | X_OK) == 0)
+		{
+//			free(dirs[i];
+//			free(dirs);
 			return (path);
+		}
 		free(path);
 		i++;
 	}
@@ -249,31 +254,35 @@ char	*find_path(char *cmd, char **env)
 	return (0);
 }
 
-void	execute_cmd(char *av, char **env)
+void	execute_cmd(char *cmd, char **env)
 {
-	char **cmd;
+	char **cmd_args;
 	char *path;
 	int	i;
 
 	i = -1;
-	cmd = ft_split(av, ' ');
-	path = find_path(cmd[0], env);
+	cmd_args = ft_split(cmd, ' ');
+	path = find_path(cmd_args[0], env);
 	if (!path)
 	{
-		while (cmd[++i])
-			free(cmd[i]);
-		free(cmd);
+		while (cmd_args[++i])
+			free(cmd_args[i]);
+		free(cmd_args);
 		perror("no path found");
 		exit(EXIT_FAILURE);
 	}
 //	printf("Path: %s\n", path);
-	if (execve(path, cmd, env) == -1)
+	if (execve(path, cmd_args, env) == -1)
 	{
 		perror("error executing cmd");
 		exit(EXIT_FAILURE);
 	}
+	while (cmd_args[++i])
+		free(cmd_args[i]);
+	free(cmd_args);
+	free(path);
 }
-
+/*
 int	get_next_line(char **line)
 {
 	char 	*buffer;
@@ -301,22 +310,6 @@ int	get_next_line(char **line)
 	return (read_content);
 }
 
-void	exec(char *cmd, char **env)
-{
-	char	**s_cmd;
-	char	*path;
-
-	s_cmd = ft_split(cmd, ' ');
-	path = find_path(s_cmd[0], env);
-	if (execve(path, s_cmd, env) == -1)
-	{
-		write(2, "pipex: cmd not found: ", 22);
-		ft_putendl_fd(s_cmd[0], 2);
-		ft_free(s_cmd);
-		exit(0);
-	}
-}
-/*
 
 char	*find_path(char *cmd, char **env)
 {
@@ -371,7 +364,7 @@ int main(void)
 
     return 0;
 }
-*/
+
 
 char *get_env_var(char *env_var, char **env)
 {
@@ -394,7 +387,7 @@ char *get_env_var(char *env_var, char **env)
 	}
 	return (NULL);
 }
-/*
+
 int main(void)
 {
     char *env[] = {
@@ -437,7 +430,7 @@ char	*my_getenv(char	*env_var, char **env)
 	}
 	return (NULL);
 }
-*/
+
 char	*get_path(char *cmd, char **env)
 {
 	int i;
@@ -465,3 +458,4 @@ char	*get_path(char *cmd, char **env)
 	ft_free(cmd_option);
 	return (cmd);
 }
+*/

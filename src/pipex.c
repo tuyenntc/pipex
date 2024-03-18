@@ -1,6 +1,5 @@
 #include "pipex.h"
-
-
+#include "../libft/libft.h"
 
 void child_process(char **av, int *fd, char **env);
 void parent_process(char **av, int *fd, char **env);
@@ -62,4 +61,3 @@ void parent_process(char **av, int *fd, char **env)
 	execute_cmd(av[3], env);
 }
 
-//env: PATH=/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/tuyennguyen/.composer/vendor/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Applications/XAMPP/xamppfiles/bin:/Users/tuyennguyen/Desktop/nand2tetris/tools
